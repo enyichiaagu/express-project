@@ -1,6 +1,7 @@
 import path from 'node:path';
 
 import express from 'express';
+import expressLayouts from 'express-ejs-layouts';
 
 import friendsRouter from './routes/friends.router.js';
 import messagesRouter from './routes/messages.router.js';
@@ -23,8 +24,12 @@ app.use((req, res, next) => {
 	console.log(`${req.method} ${req.baseUrl}${req.url} ${delta}ms`);
 });
 
-app.use('/site', express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+
+app.use(expressLayouts);
+app.use('/site', express.static(path.join(__dirname, 'public')));
+app.use('/friends', friendsRouter);
+app.use('/messages', messagesRouter);
 
 app.get('/', (req, res) => {
 	res.render('index', {
@@ -32,8 +37,6 @@ app.get('/', (req, res) => {
 		caption: 'Cool Cat',
 	});
 });
-app.use('/friends', friendsRouter);
-app.use('/messages', messagesRouter);
 
 app.listen(PORT, () => {
 	console.log(`Listening on ${PORT}...`);
