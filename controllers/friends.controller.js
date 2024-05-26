@@ -30,5 +30,4 @@ function getFriend(req, res) {
 	}
 }
 
-export { postFriend };
 export default { postFriend, getFriends, getFriend };
